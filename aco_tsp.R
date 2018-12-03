@@ -31,8 +31,9 @@ get_next_vertex <- function(weights, smell_matrix, current, vertexes, alpha, bet
     smell <- smell_matrix[current, vertexes[i]]
     weight <- weights[current, vertexes[i]]
     
-    p[i] <- (smell^alpha)/(1/weight)^betta
+    p[i] <- (smell^alpha)+(1/weight)^betta
   }
+  #print(p)
   p <- p/sum(p)
   #choose vertex with probs p
   #print(typeof(p))
@@ -67,7 +68,7 @@ acp_tsp <- function(weights,ant_count, iteration_count,
   
   n <- dim(weights)[1]
   #matrix of 1
-  smell_matrix <- matrix(integer(n^2), ncol = n) + 1
+  smell_matrix <- matrix(integer(n^2), ncol = n)
   
   best_way <- 1:n
   best_total_weight <- get_total_weight(weights, best_way)
@@ -114,7 +115,8 @@ acp_tsp <- function(weights,ant_count, iteration_count,
     print('#---------------------#')
     ways[i+1]<-best_total_weight
   }
-  plot(1:(iteration_count+1), ways, type = "l")
+  plot(1:(iteration_count+1), ways, type = "l", col = "red", xlab="Iteration number", ylab="Best way")
+
   result <- list()
   result$total_weight <- best_total_weight
   if (!is.null(labels)){
